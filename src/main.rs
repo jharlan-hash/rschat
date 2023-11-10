@@ -12,26 +12,27 @@ pub struct User {
 }
 
 fn main() {
-    let mut counter = 0;
+    let mut counter = 1;
     loop{
-        let mut counter = counter + 1;
+        //dbg!(counter);
         let mut user = load_user_data().expect("failed to load user data");
-        user_info(&user, counter);
+        
+        user_info(&user, &mut counter);
         
         if user.name.is_empty() {
             let juser = set_user_name();
             user.name = juser;
             save_user_data(&user);
         }
+        counter += 1;
 
 }
 }
 
-pub fn user_info(user: &User, counter: i32) {
-    if counter < 1 {
+pub fn user_info(user: &User, counter: &mut i32) {
+    if counter == &mut 1{
         println!("Welcome, {}!", user.name.trim());
     }
-
     let message = get_message();
     let updated_user   = User {
         name: user.name.clone(),
