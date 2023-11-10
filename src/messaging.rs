@@ -7,8 +7,14 @@ pub fn get_message() -> String {
     io::stdin().read_line(&mut message)
         .expect("Failed to read line");
 
-    message = message.trim().to_string();
+    message = message.trim().to_string();  
 
+    commands(&message);
+
+    message
+}
+
+pub fn commands(message: &String){
     if message == "clear" {
         println!("clearing data.json");
 
@@ -25,8 +31,6 @@ pub fn get_message() -> String {
     }
 
     if message == "exit" {
-        std::process::exit(0);
+        std::process::exit(1);
     }
-
-    message
 }
