@@ -24,6 +24,7 @@ fn main() {
         }
 
         user_info(&user, &mut counter);
+
         counter += 1;
 
 }
