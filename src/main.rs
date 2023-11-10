@@ -17,13 +17,13 @@ fn main() {
         //dbg!(counter);
         let mut user = load_user_data().expect("failed to load user data");
         
-        user_info(&user, &mut counter);
-        
         if user.name.is_empty() {
             let juser = set_user_name();
             user.name = juser;
             save_user_data(&user);
         }
+
+        user_info(&user, &mut counter);
         counter += 1;
 
 }
