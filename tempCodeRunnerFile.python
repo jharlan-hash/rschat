@@ -1,0 +1,4 @@
+import random
+
+msg = randint(1,100)
+print(msg)

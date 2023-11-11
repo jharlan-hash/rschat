@@ -1,6 +1,6 @@
 use serde::{Serialize, Deserialize};
 mod messaging;
-use messaging::get_message;
+use messaging::{get_message, msg_destination};
 mod user_data;
 use user_data::{set_user_name, save_user_data, load_user_data};
 
@@ -34,6 +34,9 @@ pub fn user_info(user: &User, counter: &mut i32) {
     if counter == &mut 1{
         println!("Welcome, {}!", user.name.trim());
     }
+
+    msg_destination();
+
     let message = get_message();
     let updated_user   = User {
         name: user.name.clone(),
