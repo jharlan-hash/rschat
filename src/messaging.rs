@@ -14,7 +14,7 @@ pub fn get_message() -> String {
     message
 }
 
-pub fn msg_destination(){
+pub fn msg_destination() -> String{
     println!("message destination: ");
     let mut message_destination = String::new();
     io::stdin().read_line(&mut message_destination)
@@ -23,6 +23,8 @@ pub fn msg_destination(){
     message_destination = message_destination.trim().to_string();  
 
     commands(&message_destination);
+    
+    message_destination
 }  
 
 pub fn commands(message: &String){
@@ -52,5 +54,6 @@ pub fn commands(message: &String){
 
     if message == "help" {
         println!("commands: clear, exit, help, chdest");
+        
     }
 }
