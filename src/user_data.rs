@@ -2,7 +2,7 @@ use std::io;
 use std::fs::{File, OpenOptions};
 use std::io::{Write, BufReader};
 use std::path::Path;
-use local_ip_address::local_ip;
+//use local_ip_address::local_ip;
 
 use crate::User;
 
@@ -40,7 +40,7 @@ pub fn load_user_data() -> Result<User, Box<dyn std::error::Error>> {
     } else {
         Ok(User {
             name: String::new(),
-            ip: local_ip().unwrap().to_string(),
+            //ip: local_ip().unwrap().to_string(),
             message: String::new(),
         })
     }

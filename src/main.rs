@@ -7,7 +7,7 @@ use user_data::{set_user_name, save_user_data, load_user_data};
 #[derive(Debug, Serialize, Deserialize)]
 pub struct User {
     name: String,
-    ip: String,
+    //ip: String,
     message: String,
 }
 
@@ -40,7 +40,7 @@ pub fn user_info(user: &User, counter: &mut i32) {
     let message = get_message();
     let updated_user   = User {
         name: user.name.clone(),
-        ip: user.ip.clone(),
+        //ip: user.ip.clone(),
         message,
     };
 
