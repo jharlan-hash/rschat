@@ -42,6 +42,7 @@ pub fn load_user_data() -> Result<User, Box<dyn std::error::Error>> {
             name: String::new(),
             ip: local_ip().unwrap().to_string(),
             message: String::new(),
+            destination: String::new(),
         })
     }
 }

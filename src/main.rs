@@ -9,6 +9,7 @@ pub struct User {
     name: String,
     ip: String,
     message: String,
+    destination: String,
 }
 
 fn main() {
@@ -35,13 +36,13 @@ pub fn user_info(user: &User, counter: &mut i32) {
         println!("Welcome, {}!", user.name.trim());
     }
 
-    msg_destination();
-
     let message = get_message();
+
     let updated_user   = User {
         name: user.name.clone(),
         ip: user.ip.clone(),
         message,
+        destination: msg_destination()
     };
 
     save_user_data(&updated_user);
