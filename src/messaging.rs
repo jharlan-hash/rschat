@@ -31,7 +31,17 @@ pub fn commands(message: &String){
     if message == "clear" {
         println!("clearing data.json");
 
-        if let Err(err) = fs::remove_file("data.json") {
+        if let Err(err) = fs::remove_file("data.json"){
+            if err.kind() == std::io::ErrorKind::NotFound {
+                println!("File not found.");
+            } else {
+                eprintln!("Error: {}", err);
+            }
+        } else {
+            println!("File successfully removed.");
+            std::process::exit(1);
+        }
+        if let Err(err) = fs::remove_file("message.json"){
             if err.kind() == std::io::ErrorKind::NotFound {
                 println!("File not found.");
             } else {
