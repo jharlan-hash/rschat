@@ -2,7 +2,7 @@ use serde::{Serialize, Deserialize};
 mod messaging;
 use messaging::{get_message, msg_destination};
 mod user_data;
-use user_data::{set_user_name, save_user_data, load_user_data, load_message_data, save_message_data};
+use user_data::{set_user_name, save_user_data, load_user_data, save_message_data};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct User {
@@ -30,13 +30,6 @@ fn main() {
         user_info(&user, &mut counter);
 
         counter += 1;
-
-        let mut message = load_message_data().expect("failed to load message data");
-
-        if message.message.is_empty() {
-            message.message = get_message();
-            save_message_data(&message);
-        }
 
         message_info();
 
