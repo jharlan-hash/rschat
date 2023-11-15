@@ -4,7 +4,7 @@ use std::io::{Write, BufReader};
 use std::path::Path;
 use local_ip_address::local_ip;
 
-use crate::{User, Message};
+use crate::User;
 
 pub fn set_user_name() -> String {
     println!("Please enter your name: ");
@@ -21,27 +21,14 @@ pub fn save_user_data(user: &User) {
         .write(true)
         .truncate(true)
         .create(true)
-        .open("data.json")
+        .open("users.json")
         .expect("creation failed");
 
     data_file.write_all(serialized_user.as_bytes()).expect("write failed");
 }
 
-pub fn save_message_data(message: &Message) {
-    let serialized_message = serde_json::to_string(message).expect("serialization failed");
-    
-    let mut data_file = OpenOptions::new()
-        .write(true)
-        .truncate(true)
-        .create(true)
-        .open("message.json")
-        .expect("creation failed");
-
-    data_file.write_all(serialized_message.as_bytes()).expect("write failed");
-}
-
 pub fn load_user_data() -> Result<User, Box<dyn std::error::Error>> {
-    let path = Path::new("data.json");
+    let path = Path::new("users.json");
 
     if path.exists() {
         let data_file = File::open(path)?;
@@ -57,24 +44,16 @@ pub fn load_user_data() -> Result<User, Box<dyn std::error::Error>> {
         })
     }
 }
-/*
 
-pub fn load_message_data() -> Result<Message, Box<dyn std::error::Error>> {
-    let path = Path::new("message.json");
-
-    if path.exists() {
-        let data_file = File::open(path)?;
-        let reader = BufReader::new(data_file);
-
-        let user: Message = serde_json::from_reader(reader)?;
-
-        Ok(user)
-    } else {
-        Ok(Message {
-            message: String::new(),
-            destination: String::new(),
-        })
+pub fn update_user(user: &User, counter: &mut i32) {
+    if counter == &mut 1{
+        println!("Welcome, {}!", user.name.trim());
     }
-}
 
-*/
+    let updated_user   = User {
+        name: user.name.clone(),
+        ip: user.ip.clone(),
+    };
+
+    save_user_data(&updated_user);
+}

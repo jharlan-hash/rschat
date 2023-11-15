@@ -1,8 +1,8 @@
 use serde::{Serialize, Deserialize};
 mod messaging;
-use messaging::{get_message, msg_destination};
+use messaging::update_message;
 mod user_data;
-use user_data::{set_user_name, save_user_data, load_user_data, save_message_data};
+use user_data::{set_user_name, save_user_data, load_user_data, update_user};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct User {
@@ -27,34 +27,11 @@ fn main() {
             save_user_data(&user);
         }
 
-        set_user(&user, &mut counter);
+        update_user(&user, &mut counter);
 
-        set_message_data();
+        update_message();
         
         counter += 1;
 
 }
-}
-
-pub fn set_user(user: &User, counter: &mut i32) {
-    if counter == &mut 1{
-        println!("Welcome, {}!", user.name.trim());
-    }
-
-    let updated_user   = User {
-        name: user.name.clone(),
-        ip: user.ip.clone(),
-    };
-
-    save_user_data(&updated_user);
-}
-
-pub fn set_message_data() {
-
-    let updated_message: Message = Message {
-        message: get_message(),
-        destination: msg_destination()
-    };
-
-    save_message_data(&updated_message);
 }
