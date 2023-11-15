@@ -4,3 +4,4 @@ target/.rustc_info.json
 target/
 .vscode/
 data.json
+message.json
