@@ -57,6 +57,7 @@ pub fn load_user_data() -> Result<User, Box<dyn std::error::Error>> {
         })
     }
 }
+/*
 
 pub fn load_message_data() -> Result<Message, Box<dyn std::error::Error>> {
     let path = Path::new("message.json");
@@ -75,3 +76,5 @@ pub fn load_message_data() -> Result<Message, Box<dyn std::error::Error>> {
         })
     }
 }
+
+*/

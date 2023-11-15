@@ -27,16 +27,16 @@ fn main() {
             save_user_data(&user);
         }
 
-        user_info(&user, &mut counter);
+        set_user(&user, &mut counter);
 
+        set_message_data();
+        
         counter += 1;
 
-        message_info();
-
 }
 }
 
-pub fn user_info(user: &User, counter: &mut i32) {
+pub fn set_user(user: &User, counter: &mut i32) {
     if counter == &mut 1{
         println!("Welcome, {}!", user.name.trim());
     }
@@ -49,7 +49,7 @@ pub fn user_info(user: &User, counter: &mut i32) {
     save_user_data(&updated_user);
 }
 
-pub fn message_info() {
+pub fn set_message_data() {
 
     let updated_message: Message = Message {
         message: get_message(),
