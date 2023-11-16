@@ -58,8 +58,7 @@ pub fn update_user(user: &User, counter: &mut i32) {
 
     save_user_data(&updated_user);
 }
-/* 
+
 pub fn clear(){
     println!("{}{}", termion::clear::All, termion::cursor::Goto(1, 1));
 }
-*/
