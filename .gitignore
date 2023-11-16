@@ -5,3 +5,4 @@ target/
 .vscode/
 data.json
 message.json
+users.json

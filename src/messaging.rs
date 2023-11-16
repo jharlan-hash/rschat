@@ -3,6 +3,7 @@ use std::fs;
 use crate::Message;
 use std::fs::OpenOptions;
 use std::io::Write;
+use crate::main;
 
 
 pub fn get_message() -> String {
@@ -44,14 +45,9 @@ pub fn commands(message: &String){
         std::process::exit(1);
     }
 
-    if message == "chdest"{
-        println!("changing destination");
-        msg_destination();
-    }
-
     if message == "help" {
-        println!("commands: clear, exit, help, chdest");
-        
+        println!("commands: clear, exit, help");
+        main();
     }
 }
 

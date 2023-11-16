@@ -2,7 +2,7 @@ use serde::{Serialize, Deserialize};
 mod messaging;
 use messaging::update_message;
 mod user_data;
-use user_data::{set_user_name, save_user_data, load_user_data, update_user};
+use user_data::{set_user_name, save_user_data, load_user_data, update_user, /*clear*/};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct User {
@@ -27,11 +27,12 @@ fn main() {
             save_user_data(&user);
         }
 
-        update_user(&user, &mut counter);
-
         update_message();
+        
+        update_user(&user, &mut counter);
         
         counter += 1;
 
 }
 }
+
