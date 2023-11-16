@@ -26,10 +26,10 @@ fn main() {
             user.name = set_user_name();
             save_user_data(&user);
         }
-
-        update_message();
-        
         update_user(&user, &mut counter);
+
+        
+        update_message();
         
         counter += 1;
 
