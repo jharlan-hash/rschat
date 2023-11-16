@@ -152,7 +152,7 @@ dependencies = [
 
 [[package]]
 name = "sovchat"
-version = "0.1.0"
+version = "0.1.4"
 dependencies = [
  "local-ip-address",
  "serde",
