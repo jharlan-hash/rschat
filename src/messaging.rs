@@ -1,8 +1,11 @@
+//messaging.rs
 use std::io;
 use std::fs;
-use crate::Message;
 use std::fs::OpenOptions;
 use std::io::Write;
+use crate::Message;
+use crate::user_data::get_ip_by_name;
+
 
 
 pub fn get_message() -> String {
@@ -18,24 +21,29 @@ pub fn get_message() -> String {
     message
 }
 
-pub fn msg_destination() -> String{
+pub fn msg_destination() -> String {
     println!("message destination: ");
     let mut message_destination = String::new();
     io::stdin().read_line(&mut message_destination)
         .expect("Failed to read line");
 
-    message_destination = message_destination.trim().to_string();  
+    message_destination = message_destination.trim().to_string();
 
-    commands(&message_destination);
-    
+    if let Some(ip) = get_ip_by_name(&message_destination) {
+        println!("Destination IP: {}", ip);
+    } else {
+        println!("User not found.");
+        // Handle the case when the user is not found, perhaps ask the user to enter the destination again.
+    }
+
     message_destination
-}  
+}
 
 pub fn commands(message: &String){
     if message == "clear" {
         println!("clearing data");
 
-        fs::remove_file("users.json").expect("Error clearing file data.json");
+        //fs::remove_file("users.json").expect("Error clearing file data.json");
         fs::remove_file("message.json").expect("Error clearing file message.json");
         std::process::exit(1);
     }

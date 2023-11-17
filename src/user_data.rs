@@ -1,10 +1,9 @@
+//user_data.rs
 use std::io;
 use std::fs::{File, OpenOptions};
 use std::io::{Write, BufReader};
 use std::path::Path;
-//use termion;
 use local_ip_address::local_ip;
-
 use crate::User;
 
 pub fn set_user_name() -> String {
@@ -16,16 +15,40 @@ pub fn set_user_name() -> String {
 }
 
 pub fn save_user_data(user: &User) {
-    let serialized_user = serde_json::to_string(user).expect("serialization failed");
-    
+    let mut users = load_all_users();
+    let user_index = users.iter().position(|u| u.name == user.name);
+
+    match user_index {
+        Some(index) => {
+            // User exists, update the data
+            users[index] = user.clone();
+        }
+        None => {
+            // User doesn't exist, add to the list
+            users.push(user.clone());
+        }
+    }
+
+    let serialized_users = serde_json::to_string(&users).expect("serialization failed");
+
     let mut data_file = OpenOptions::new()
         .write(true)
-        .truncate(true)
         .create(true)
+        .truncate(true)
         .open("users.json")
         .expect("creation failed");
 
-    data_file.write_all(serialized_user.as_bytes()).expect("write failed");
+    data_file.write_all(serialized_users.as_bytes()).expect("write failed");
+}
+
+fn load_all_users() -> Vec<User> {
+    if let Ok(data_file) = File::open("users.json") {
+        let reader = BufReader::new(data_file);
+        if let Ok(users) = serde_json::from_reader(reader) {
+            return users;
+        }
+    }
+    Vec::new()
 }
 
 pub fn load_user_data() -> Result<User, Box<dyn std::error::Error>> {
@@ -61,4 +84,16 @@ pub fn update_user(user: &User, counter: &mut i32) {
 
 pub fn clear(){
     println!("{}{}", termion::clear::All, termion::cursor::Goto(1, 1));
+}
+
+pub fn get_ip_by_name(destination: &str) -> Option<String> {
+    if let Ok(data_file) = File::open("users.json") {
+        let reader = BufReader::new(data_file);
+        if let Ok(users) = serde_json::from_reader::<_, Vec<User>>(reader) {
+            if let Some(user) = users.iter().find(|u| u.name == destination) {
+                return Some(user.ip.clone());
+            }
+        }
+    }
+    None
 }
