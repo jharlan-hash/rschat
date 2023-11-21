@@ -58,9 +58,18 @@ pub fn load_user_data() -> Result<User, Box<dyn std::error::Error>> {
         let data_file = File::open(path)?;
         let reader = BufReader::new(data_file);
 
-        let user: User = serde_json::from_reader(reader)?;
+        let users: Vec<User> = serde_json::from_reader(reader)?;
 
-        Ok(user)
+        // Find the user whose IP matches the local IP
+        if let Some(user) = users.iter().find(|u| u.ip == local_ip().unwrap().to_string()) {
+            Ok(user.clone())
+        } else {
+            // Handle the case when the user is not found
+            Ok(User {
+                name: String::new(),
+                ip: local_ip().unwrap().to_string(),
+            })
+        }
     } else {
         Ok(User {
             name: String::new(),
@@ -68,6 +77,8 @@ pub fn load_user_data() -> Result<User, Box<dyn std::error::Error>> {
         })
     }
 }
+
+
 
 pub fn update_user(user: &User, counter: &mut i32) {
     if counter == &mut 1{
