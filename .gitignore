@@ -6,3 +6,5 @@ target/
 data.json
 message.json
 users.json
+src/{vim}
+Cargo.toml
