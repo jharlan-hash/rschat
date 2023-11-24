@@ -1,9 +1,10 @@
 //main.rs
+use tokio::{
+    sync::broadcast,
+    io::{AsyncWriteExt, BufReader, AsyncBufReadExt},
+    net::TcpListener
+};
 use serde::{Serialize, Deserialize};
-mod messaging;
-use messaging::update_message;
-mod user_data;
-use user_data::{set_user_name, save_user_data, load_user_data, update_user, clear};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct User {
@@ -17,25 +18,41 @@ pub struct Message {
     destination: String,
 }
 
-fn main() {
-    let mut counter = 1;
+#[tokio::main]
+async fn main() {    
+    let listener = TcpListener::bind("localhost:8080").await.unwrap();
+
+    let (tx, _rx) = broadcast::channel(10); 
     loop{
-        let mut user = load_user_data().expect("failed to load user data");
-        
-        if user.name.is_empty() {
-            user.name = set_user_name();
-            save_user_data(&user);
-        }
+        let (mut socket, addr) = listener.accept().await.unwrap();
+        let tx = tx.clone();
+        let mut rx = tx.subscribe();
 
-        update_user(&user, &mut counter);
-        
-        update_message();
-        
-        println!("Welcome, {}!", user.name.trim());
-        
-        clear();
-        
-        counter += 1;
-}
-}
+        tokio::spawn(async move {
+            let (read,mut writer) = socket.split();
 
+            let mut reader = BufReader::new(read);
+            let mut line = String::new();  
+
+
+            loop{
+                tokio::select!{
+                    result = reader.read_line(&mut line) => {
+                        if result.unwrap() == 0{
+                            break;
+                        }
+                        tx.send((line.clone(), addr)).unwrap();
+                        line.clear();
+                    }
+                    result = rx.recv() => {
+                        let (msg, other_addr) = result.unwrap();
+                        
+                        if addr != other_addr{
+                        writer.write_all(msg.as_bytes()).await.unwrap();
+                        }
+                    }
+                }  
+            }
+        });
+    } 
+}
